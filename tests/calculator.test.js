@@ -1,160 +1,99 @@
-/**
- * Calculator Module Unit Tests
- * Tests for add() and multiply() functions including input validation.
- */
+const { add, multiply } = require('../src/calculator');
 
-import { add, multiply } from '../src/calculator.js';
+describe('Calculator', () => {
+  describe('add()', () => {
+    test('adds two positive numbers', () => {
+      expect(add(2, 3)).toBe(5);
+    });
 
-// Simple test runner
-let passed = 0;
-let failed = 0;
+    test('adds zero values', () => {
+      expect(add(0, 0)).toBe(0);
+      expect(add(5, 0)).toBe(5);
+      expect(add(0, 5)).toBe(5);
+    });
 
-function test(name, fn) {
-  try {
-    fn();
-    console.log(`✓ ${name}`);
-    passed++;
-  } catch (error) {
-    console.log(`✗ ${name}`);
-    console.log(`  Error: ${error.message}`);
-    failed++;
-  }
-}
+    test('adds decimal numbers', () => {
+      expect(add(1.5, 2.5)).toBe(4);
+      expect(add(0.1, 0.2)).toBeCloseTo(0.3);
+    });
 
-function assertEqual(actual, expected, message = '') {
-  if (actual !== expected) {
-    throw new Error(`${message} Expected ${expected}, got ${actual}`);
-  }
-}
+    test('throws TypeError for non-number inputs (string)', () => {
+      expect(() => add('2', 3)).toThrow(TypeError);
+      expect(() => add(2, '3')).toThrow(TypeError);
+      expect(() => add('2', '3')).toThrow(TypeError);
+    });
 
-function assertThrows(fn, message = '') {
-  let threw = false;
-  try {
-    fn();
-  } catch (e) {
-    threw = true;
-  }
-  if (!threw) {
-    throw new Error(`${message} Expected function to throw an error`);
-  }
-}
+    test('throws TypeError for non-number inputs (null/undefined)', () => {
+      expect(() => add(null, 3)).toThrow(TypeError);
+      expect(() => add(2, undefined)).toThrow(TypeError);
+      expect(() => add(null, null)).toThrow(TypeError);
+    });
 
-// ============== ADD FUNCTION TESTS ==============
+    test('throws TypeError for non-number inputs (object)', () => {
+      expect(() => add({}, 3)).toThrow(TypeError);
+      expect(() => add(2, [])).toThrow(TypeError);
+    });
 
-console.log('\n=== add() Tests ===\n');
+    test('throws Error for negative numbers (first argument)', () => {
+      expect(() => add(-1, 5)).toThrow(Error);
+      expect(() => add(-10, 3)).toThrow(Error);
+    });
 
-// Normal operation tests
-test('add(2, 3) should return 5', () => {
-  assertEqual(add(2, 3), 5);
+    test('throws Error for negative numbers (second argument)', () => {
+      expect(() => add(5, -1)).toThrow(Error);
+      expect(() => add(3, -10)).toThrow(Error);
+    });
+
+    test('throws Error for negative numbers (both arguments)', () => {
+      expect(() => add(-1, -5)).toThrow(Error);
+    });
+  });
+
+  describe('multiply()', () => {
+    test('multiplies two positive numbers', () => {
+      expect(multiply(3, 4)).toBe(12);
+    });
+
+    test('multiplies with zero values', () => {
+      expect(multiply(0, 5)).toBe(0);
+      expect(multiply(5, 0)).toBe(0);
+      expect(multiply(0, 0)).toBe(0);
+    });
+
+    test('multiplies decimal numbers', () => {
+      expect(multiply(2.5, 4)).toBe(10);
+      expect(multiply(0.5, 0.5)).toBe(0.25);
+    });
+
+    test('throws TypeError for non-number inputs (string)', () => {
+      expect(() => multiply('3', 4)).toThrow(TypeError);
+      expect(() => multiply(3, '4')).toThrow(TypeError);
+      expect(() => multiply('3', '4')).toThrow(TypeError);
+    });
+
+    test('throws TypeError for non-number inputs (null/undefined)', () => {
+      expect(() => multiply(null, 4)).toThrow(TypeError);
+      expect(() => multiply(3, undefined)).toThrow(TypeError);
+      expect(() => multiply(null, null)).toThrow(TypeError);
+    });
+
+    test('throws TypeError for non-number inputs (object)', () => {
+      expect(() => multiply({}, 4)).toThrow(TypeError);
+      expect(() => multiply(3, [])).toThrow(TypeError);
+    });
+
+    test('throws Error for negative numbers (first argument)', () => {
+      expect(() => multiply(-2, 5)).toThrow(Error);
+      expect(() => multiply(-10, 3)).toThrow(Error);
+    });
+
+    test('throws Error for negative numbers (second argument)', () => {
+      expect(() => multiply(5, -2)).toThrow(Error);
+      expect(() => multiply(3, -10)).toThrow(Error);
+    });
+
+    test('throws Error for negative numbers (both arguments)', () => {
+      expect(() => multiply(-2, -5)).toThrow(Error);
+    });
+  });
 });
-
-test('add(0, 0) should return 0', () => {
-  assertEqual(add(0, 0), 0);
-});
-
-test('add(100, 200) should return 300', () => {
-  assertEqual(add(100, 200), 300);
-});
-
-test('add(0.5, 0.5) should return 1', () => {
-  assertEqual(add(0.5, 0.5), 1);
-});
-
-test('add(-5, 10) should throw error (negative first argument)', () => {
-  assertThrows(() => add(-5, 10));
-});
-
-test('add(5, -10) should throw error (negative second argument)', () => {
-  assertThrows(() => add(5, -10));
-});
-
-test('add(-5, -10) should throw error (both negative)', () => {
-  assertThrows(() => add(-5, -10));
-});
-
-test('add("2", 3) should throw error (string first argument)', () => {
-  assertThrows(() => add("2", 3));
-});
-
-test('add(2, "3") should throw error (string second argument)', () => {
-  assertThrows(() => add(2, "3"));
-});
-
-test('add(null, 5) should throw error (null first argument)', () => {
-  assertThrows(() => add(null, 5));
-});
-
-test('add(5, undefined) should throw error (undefined second argument)', () => {
-  assertThrows(() => add(5, undefined));
-});
-
-// ============== MULTIPLY FUNCTION TESTS ==============
-
-console.log('\n=== multiply() Tests ===\n');
-
-// Normal operation tests
-test('multiply(2, 3) should return 6', () => {
-  assertEqual(multiply(2, 3), 6);
-});
-
-test('multiply(0, 5) should return 0', () => {
-  assertEqual(multiply(0, 5), 0);
-});
-
-test('multiply(5, 0) should return 0', () => {
-  assertEqual(multiply(5, 0), 0);
-});
-
-test('multiply(1, 100) should return 100', () => {
-  assertEqual(multiply(1, 100), 100);
-});
-
-test('multiply(10, 10) should return 100', () => {
-  assertEqual(multiply(10, 10), 100);
-});
-
-test('multiply(0.5, 10) should return 5', () => {
-  assertEqual(multiply(0.5, 10), 5);
-});
-
-test('multiply(-2, 5) should throw error (negative first argument)', () => {
-  assertThrows(() => multiply(-2, 5));
-});
-
-test('multiply(2, -5) should throw error (negative second argument)', () => {
-  assertThrows(() => multiply(2, -5));
-});
-
-test('multiply(-2, -5) should throw error (both negative)', () => {
-  assertThrows(() => multiply(-2, -5));
-});
-
-test('multiply("2", 3) should throw error (string first argument)', () => {
-  assertThrows(() => multiply("2", 3));
-});
-
-test('multiply(2, "3") should throw error (string second argument)', () => {
-  assertThrows(() => multiply(2, "3"));
-});
-
-test('multiply(null, 5) should throw error (null first argument)', () => {
-  assertThrows(() => multiply(null, 5));
-});
-
-test('multiply(5, undefined) should throw error (undefined second argument)', () => {
-  assertThrows(() => multiply(5, undefined));
-});
-
-// ============== SUMMARY ==============
-
-console.log('\n=== Test Summary ===\n');
-console.log(`Total: ${passed + failed}`);
-console.log(`Passed: ${passed}`);
-console.log(`Failed: ${failed}`);
-
-if (failed > 0) {
-  process.exit(1);
-} else {
-  console.log('\n✓ All tests passed!\n');
-  process.exit(0);
-}
