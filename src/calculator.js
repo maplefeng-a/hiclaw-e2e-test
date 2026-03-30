@@ -1,38 +1,26 @@
 /**
  * Calculator Module
- * Provides basic arithmetic operations with input validation.
+ * Provides basic arithmetic operations
  */
 
 /**
- * Adds two numbers together.
- * @param {number} a - The first number (must be non-negative).
- * @param {number} b - The second number (must be non-negative).
- * @returns {number} The sum of a and b.
- * @throws {Error} If inputs are not non-negative numbers.
- * @example
- * // returns 5
- * add(2, 3);
+ * Adds two numbers
+ * @param {number} a - First number
+ * @param {number} b - Second number
+ * @returns {number} Sum of a and b
  */
-export function add(a, b) {
-  if (typeof a !== 'number' || typeof b !== 'number' || a < 0 || b < 0) {
-    throw new Error('Inputs must be non-negative numbers');
-  }
+function add(a, b) {
   return a + b;
 }
 
 /**
- * Multiplies two numbers together.
- * @param {number} a - The first number (must be non-negative).
- * @param {number} b - The second number (must be non-negative).
- * @returns {number} The product of a and b.
- * @throws {Error} If inputs are not non-negative numbers.
- * @example
- * // returns 6
- * multiply(2, 3);
+ * Multiplies two numbers
+ * @param {number} a - First number
+ * @param {number} b - Second number
+ * @returns {number} Product of a and b
  */
-export function multiply(a, b) {
-  if (typeof a !== 'number' || typeof b !== 'number' || a < 0 || b < 0) {
-    throw new Error('Inputs must be non-negative numbers');
-  }
+function multiply(a, b) {
   return a * b;
 }
+
+module.exports = { add, multiply };
