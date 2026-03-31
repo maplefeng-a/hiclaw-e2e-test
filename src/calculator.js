@@ -1,38 +1,47 @@
 /**
- * Calculator Module
- * Provides basic arithmetic operations with input validation.
+ * Calculator module - basic arithmetic operations
+ * @module calculator
  */
 
 /**
- * Adds two numbers together.
- * @param {number} a - The first number (must be non-negative).
- * @param {number} b - The second number (must be non-negative).
- * @returns {number} The sum of a and b.
- * @throws {Error} If inputs are not non-negative numbers.
+ * Add two numbers
+ * @param {number} a - First number
+ * @param {number} b - Second number
+ * @returns {number} Sum of a and b
+ * @throws {TypeError} When inputs are not numbers or not finite
  * @example
- * // returns 5
- * add(2, 3);
+ * add(2, 3); // returns 5
+ * add(-1, 1); // returns 0
  */
-export function add(a, b) {
-  if (typeof a !== 'number' || typeof b !== 'number' || a < 0 || b < 0) {
-    throw new Error('Inputs must be non-negative numbers');
-  }
-  return a + b;
+function add(a, b) {
+    if (typeof a !== 'number' || typeof b !== 'number') {
+        throw new TypeError('Both arguments must be numbers');
+    }
+    if (!isFinite(a) || !isFinite(b)) {
+        throw new TypeError('Arguments must be finite numbers');
+    }
+    return a + b;
 }
 
 /**
- * Multiplies two numbers together.
- * @param {number} a - The first number (must be non-negative).
- * @param {number} b - The second number (must be non-negative).
- * @returns {number} The product of a and b.
- * @throws {Error} If inputs are not non-negative numbers.
+ * Multiply two numbers
+ * @param {number} a - First number
+ * @param {number} b - Second number
+ * @returns {number} Product of a and b
+ * @throws {TypeError} When inputs are not numbers or not finite
  * @example
- * // returns 6
- * multiply(2, 3);
+ * multiply(2, 3); // returns 6
+ * multiply(-2, 3); // returns -6
  */
-export function multiply(a, b) {
-  if (typeof a !== 'number' || typeof b !== 'number' || a < 0 || b < 0) {
-    throw new Error('Inputs must be non-negative numbers');
-  }
-  return a * b;
+function multiply(a, b) {
+    if (typeof a !== 'number' || typeof b !== 'number') {
+        throw new TypeError('Both arguments must be numbers');
+    }
+    if (!isFinite(a) || !isFinite(b)) {
+        throw new TypeError('Arguments must be finite numbers');
+    }
+    return a * b;
 }
+
+// Export functions
+module.exports = { add, multiply };
